@@ -19,7 +19,7 @@ phases:
     commands:
       - echo Build completed on date
       - echo Creating image definitions file...
-      - echo '[{"name":"HelloWorld","imageUri":"public.ecr.aws/j9v3f8u1/nodejs-app-task-1:latest","containerPort":8080}]' > imagedefinitions.json
+      - echo '[{"name":"node","imageUri":"public.ecr.aws/j9v3f8u1/nodejs-app-task-1:latest","containerPort":8080}]' > imagedefinitions.json
 
 artifacts:
   files:
