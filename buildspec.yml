@@ -1,0 +1,30 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/o3y0f5y7
+  build:
+    commands:
+      - echo Building Docker image...
+      - docker build -t testec2  .
+      - echo Pushing Docker image to ECR...
+      - docker tag testec2:latest public.ecr.aws/o3y0f5y7/testec2:latest
+      - docker push public.ecr.aws/o3y0f5y7/testec2:latest
+  post_build:
+    commands:
+      - echo Build completed on date
+      - echo Creating image definitions file...
+      - echo '[{"name":"HelloWorld","imageUri":"public.ecr.aws/j9v3f8u1/nodejs-app-task-1:latest","containerPort":8080}]' > imagedefinitions.json
+
+artifacts:
+  files:
+    - '**/*'
+  secondary-artifacts:
+    imagedefinitions:
+      files:
+        - imagedefinitions.json
